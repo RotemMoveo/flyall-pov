@@ -1339,7 +1339,7 @@ body.is-guest.reel-open .who.who--pts{display:none}
 <main id="stage"></main>
 
 <script>
-const ARC   = [{"src": "POV%20Videos/0_Skier_Ski_Lift_720x1280.mp4", "logos": ["ski-trek.png"], "event": "סקי בזרמט · שוויץ", "date": "דצמבר 2026", "tag": "6 לילות · כולל טיסה"}, {"src": "POV%20Videos/0_Skier_Skiing_720x1280.mp4", "logos": ["ski-trek.png"], "event": "סקי בשאמוני · האלפים", "date": "ינואר 2027", "tag": "7 לילות · כולל טיסה"}, {"src": "POV%20Videos/0_Football_Soccer_720x1280.mp4", "logos": ["barcelona.png", "real-madrid.png"], "event": "אל קלאסיקו · מדריד", "date": "אוקטובר 2026", "tag": "כרטיס + 2 לילות"}, {"src": "POV%20Videos/0_Concert_Crowd_720x1280.mp4", "logos": ["celine-dion.png"], "event": "סלין דיון · וומבלי", "date": "יוני 2027", "tag": "כרטיס VIP + מלון"}, {"src": "POV%20Videos/0_Festival_Music_Festival_720x1280.mp4", "logos": ["tomorrowland.png"], "event": "טומורולנד · בלגיה", "date": "יולי 2027", "tag": "3 ימי פסטיבל"}, {"src": "POV%20Videos/0_Football_Stadium_720x1280.mp4", "logos": ["champions-league.png"], "event": "ליל האלופות · סן סירו", "date": "מאי 2027", "tag": "כרטיס + טיסה"}];
+const ARC   = [{"src": "POV%20Videos/0_Football_Soccer_720x1280.mp4", "logos": ["barcelona.png", "real-madrid.png"], "event": "אל קלאסיקו · מדריד", "date": "9 במאי 2027", "tag": "כרטיס + 2 לילות", "dates": ["9 במאי"]}, {"src": "POV%20Videos/0_Concert_Crowd_720x1280.mp4", "logos": ["celine-dion.png"], "event": "סלין דיון · פריז", "date": "מאי 2027", "tag": "כרטיס VIP + מלון", "dates": ["8.5", "12.5", "14.5", "15.5", "19.5", "21.5", "22.5", "26.5", "28.5", "29.5"]}, {"src": "POV%20Videos/0_Festival_Music_Festival_720x1280.mp4", "logos": ["tomorrowland.png"], "event": "Tomorrowland · בלגיה", "date": "יולי 2027", "tag": "3 ימי פסטיבל", "dates": ["סופ״ש ראשון · יולי", "סופ״ש שני · יולי"]}, {"src": "POV%20Videos/0_Football_Stadium_720x1280.mp4", "logos": ["champions-league.png"], "event": "גמר ליגת האלופות · מדריד", "date": "5 ביוני 2027", "tag": "כרטיס + טיסה", "dates": ["5 ביוני"]}, {"src": "POV%20Videos/0_Skier_Ski_Lift_720x1280.mp4", "logos": ["tomorrowland.png"], "event": "Tomorrowland Winter · אלפ ד׳ואז", "date": "20–27 במרץ 2027", "tag": "שבוע פסטיבל + סקי", "dates": ["20–27 במרץ"]}, {"src": "POV%20Videos/0_Musician_Playing_Guitar_720x1280.mp4", "logos": [], "event": "אואזיס · בריטניה ואירופה", "date": "מאי–ספטמבר 2027", "tag": "כרטיס + 2 לילות", "dates": ["גלזגו · מאי", "מנצ׳סטר · יוני", "מינכן · יולי", "רומא · יולי", "נבוורת׳ · ספטמבר"]}];
 const CTA_LABEL = 'קחו אותי לשם';
 const ARROW    = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>';
 const ARROW_UL = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M17 17L7 7M7 7h9M7 7v9"/></svg>';
@@ -1607,9 +1607,9 @@ function buildArc(){
 
 /* ================= SECTION 3 · question + categories ================= */
 const CATS = [
-  { k:'sport', v:'0_Football_Stadium',         t:'ספורט',     n:38, from:'2,400', rest:-1.6 },
-  { k:'shows', v:'0_Concert_Crowd',            t:'הופעות',    n:26, from:'1,800', rest: 1.2 },
-  { k:'fest',  v:'0_Festival_Music_Festival',  t:'פסטיבלים',  n:14, from:'3,100', rest:-1.2 },
+  { k:'sport', v:'0_Football_Stadium',         t:'ספורט',     n:5, from:'2,400', rest:-1.6 },
+  { k:'shows', v:'0_Concert_Crowd',            t:'הופעות',    n:2, from:'2,900', rest: 1.2 },
+  { k:'fest',  v:'0_Festival_Music_Festival',  t:'פסטיבלים',  n:2, from:'4,600', rest:-1.2 },
 ];
 /* the signed-in visitor's balance (demo) */
 const pts = s => +String(s).replace(/[^\d]/g,'');
@@ -1932,12 +1932,12 @@ const HAVE = (() => {
     + '<button class="rd__have__go" type="button">לרכישה</button>';
 })();
 const ABOUT = [
-  'שלושה ימים על המסלולים הגבוהים של זרמט, עם מדריך צמוד ומעבר ישיר מהמלון למעלית.',
-  'ירידה ראשונה בשאמוני עם ציוד מלא, שיעור פתיחה ולילה אחד במלון שלרגלי ההר.',
-  'אל קלאסיקו מהיציע, עם סיור מאחורי הקלעים באצטדיון ושני לילות במרכז מדריד.',
-  'ערב אחד עם סלין דיון בוומבלי, כרטיס באזור הקדמי והסעות מהמלון ובחזרה.',
-  'ארבעה ימים בטומורולנד, כולל מתחם לינה, צמיד מלא וכניסה לאזורי האמנים.',
-  'ליל אלופות בסן סירו, מושב מרכזי, ארוחה לפני המשחק ושני לילות במילאנו.',
+  "ריאל מדריד מול ברצלונה בסנטיאגו ברנבאו, כרטיס ביציע ושני לילות במרכז מדריד.",
+  "ערב עם סלין דיון ב־La Défense Arena, כרטיס באזור הקדמי ולילה במלון בפריז.",
+  "שלושה ימים ב־Tomorrowland בבום, כולל מתחם לינה, צמיד מלא וכניסה לכל הבמות.",
+  "גמר ליגת האלופות באצטדיון מטרופוליטנו, מושב מרכזי ושני לילות במדריד.",
+  "שבוע של Tomorrowland Winter באלפ ד׳ואז, צמיד מלא, סקי־פס ולינה בכפר שלרגלי ההר.",
+  "Oasis Live '27 באצטדיון מלא, כרטיס על הדשא ושני לילות בעיר ההופעה.",
 ];
 const CHEV = '<svg width="26" height="30" viewBox="0 0 26 30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3v21M5 17l8 8 8-8"/></svg>';
 const X    = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>';
@@ -2163,8 +2163,8 @@ const slides = ARC.map(d => {
       '<h3 class="rd__title">' + d.event.split(' · ')[0] + '</h3>'
     + '<p class="rd__about">' + ABOUT[i] + '</p>'
     + '<div class="rd__glass">'
-    +   '<p class="rd__lbl">' + DATES.length + ' מועדים</p>'
-    +   '<p class="rd__dates">' + DATES.map(x => '<span>' + x + '</span>').join('<i></i>') + '</p>'
+    +   '<p class="rd__lbl">' + ((d.dates || DATES).length > 1 ? (d.dates || DATES).length + ' מועדים' : 'מועד אחד') + '</p>'
+    +   '<p class="rd__dates">' + (d.dates || DATES).map(x => '<span>' + x + '</span>').join('<i></i>') + '</p>'
     +   '<div class="rd__rule"></div>'
     +   '<p class="rd__lbl">' + PACKS.length + ' חבילות</p>'
     +   '<div class="rd__tiers">' + PACKS.map(([n]) => '<span>' + n + '</span>').join('') + '</div>'
