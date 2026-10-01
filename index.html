@@ -1339,7 +1339,7 @@ body.is-guest.reel-open .who.who--pts{display:none}
 <main id="stage"></main>
 
 <script>
-const ARC   = [{"src": "POV%20Videos/0_Football_Soccer_720x1280.mp4", "logos": ["barcelona.png", "real-madrid.png"], "event": "אל קלאסיקו · מדריד", "date": "9 במאי 2027", "tag": "כרטיס + 2 לילות", "dates": ["9 במאי"]}, {"src": "POV%20Videos/0_Concert_Crowd_720x1280.mp4", "logos": ["celine-dion.png"], "event": "סלין דיון · פריז", "date": "מאי 2027", "tag": "כרטיס VIP + מלון", "dates": ["8.5", "12.5", "14.5", "15.5", "19.5", "21.5", "22.5", "26.5", "28.5", "29.5"]}, {"src": "POV%20Videos/0_Festival_Music_Festival_720x1280.mp4", "logos": ["tomorrowland.png"], "event": "Tomorrowland · בלגיה", "date": "יולי 2027", "tag": "3 ימי פסטיבל", "dates": ["סופ״ש ראשון · יולי", "סופ״ש שני · יולי"]}, {"src": "POV%20Videos/0_Football_Stadium_720x1280.mp4", "logos": ["champions-league.png"], "event": "גמר ליגת האלופות · מדריד", "date": "5 ביוני 2027", "tag": "כרטיס + טיסה", "dates": ["5 ביוני"]}, {"src": "POV%20Videos/0_Concert_Music_Festival_720x1280.mp4", "logos": ["tomorrowland.png"], "event": "Tomorrowland Winter · אלפ ד׳ואז", "date": "20–27 במרץ 2027", "tag": "שבוע פסטיבל + לינה", "dates": ["20–27 במרץ"]}, {"src": "POV%20Videos/0_Musician_Playing_Guitar_720x1280.mp4", "logos": [], "event": "אואזיס · בריטניה ואירופה", "date": "מאי–ספטמבר 2027", "tag": "כרטיס + 2 לילות", "dates": ["גלזגו · מאי", "מנצ׳סטר · יוני", "מינכן · יולי", "רומא · יולי", "נבוורת׳ · ספטמבר"]}];
+const ARC   = [{"src": "POV%20Videos/0_Football_Soccer_720x1280.mp4", "logos": ["barcelona.png", "real-madrid.png"], "event": "אל קלאסיקו · מדריד", "pts": "6,200", "date": "9 במאי 2027", "tag": "כרטיס + 2 לילות", "dates": ["9 במאי"]}, {"src": "POV%20Videos/0_Concert_Crowd_720x1280.mp4", "logos": ["celine-dion.png"], "event": "סלין דיון · פריז", "pts": "5,700", "date": "מאי 2027", "tag": "כרטיס VIP + מלון", "dates": ["8.5", "12.5", "14.5", "15.5", "19.5", "21.5", "22.5", "26.5", "28.5", "29.5"]}, {"src": "POV%20Videos/0_Festival_Music_Festival_720x1280.mp4", "logos": ["tomorrowland.png"], "event": "Tomorrowland · בלגיה", "pts": "6,100", "date": "יולי 2027", "tag": "3 ימי פסטיבל", "dates": ["סופ״ש ראשון · יולי", "סופ״ש שני · יולי"]}, {"src": "POV%20Videos/0_Football_Stadium_720x1280.mp4", "logos": ["champions-league.png"], "event": "גמר ליגת האלופות · מדריד", "pts": "6,800", "date": "5 ביוני 2027", "tag": "כרטיס + טיסה", "dates": ["5 ביוני"]}, {"src": "POV%20Videos/0_Concert_Music_Festival_720x1280.mp4", "logos": ["tomorrowland.png"], "event": "Tomorrowland Winter · אלפ ד׳ואז", "pts": "6,400", "date": "20–27 במרץ 2027", "tag": "שבוע פסטיבל + לינה", "dates": ["20–27 במרץ"]}, {"src": "POV%20Videos/0_Musician_Playing_Guitar_720x1280.mp4", "logos": [], "event": "אואזיס · בריטניה ואירופה", "pts": "5,200", "date": "מאי–ספטמבר 2027", "tag": "כרטיס + 2 לילות", "dates": ["גלזגו · מאי", "מנצ׳סטר · יוני", "מינכן · יולי", "רומא · יולי", "נבוורת׳ · ספטמבר"]}];
 const CTA_LABEL = 'קחו אותי לשם';
 const ARROW    = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>';
 const ARROW_UL = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M17 17L7 7M7 7h9M7 7v9"/></svg>';
@@ -1607,9 +1607,9 @@ function buildArc(){
 
 /* ================= SECTION 3 · question + categories ================= */
 const CATS = [
-  { k:'sport', v:'0_Football_Stadium',         t:'ספורט',     n:5, from:'2,400', rest:-1.6 },
-  { k:'shows', v:'0_Concert_Crowd',            t:'הופעות',    n:2, from:'2,900', rest: 1.2 },
-  { k:'fest',  v:'0_Festival_Music_Festival',  t:'פסטיבלים',  n:2, from:'4,600', rest:-1.2 },
+  { k:'sport', v:'0_Football_Stadium',         t:'ספורט',     n:5, from:'5,400', rest:-1.6 },
+  { k:'shows', v:'0_Concert_Crowd',            t:'הופעות',    n:2, from:'5,200', rest: 1.2 },
+  { k:'fest',  v:'0_Festival_Music_Festival',  t:'פסטיבלים',  n:2, from:'6,100', rest:-1.2 },
 ];
 /* the signed-in visitor's balance (demo) */
 const pts = s => +String(s).replace(/[^\d]/g,'');
@@ -1910,16 +1910,16 @@ function buildPerks(){
 /* ================= THE EXPERIENCE · full-frame view ================= */
 const DATES = ['12–15 במרץ', '2–5 באפריל', '9–12 במאי'];
 const PACKS = [
-  ['בסיס',  '45,000 נק׳'],
-  ['פלוס',  '62,000 נק׳'],
-  ['VIP',   '88,000 נק׳'],
+  ['בסיס',  '6,000 נק׳'],
+  ['פלוס',  '7,200 נק׳'],
+  ['VIP',   '8,500 נק׳'],
 ];
 /* the account's balance; shown only in the "enough points" version of the page */
 /* demo: one balance everywhere, the same 500 the lobby shows; the points switch only
    decides whether the experience view says it is enough */
 const BALANCE = +(document.querySelector('.fa-points__value')?.textContent || '500').replace(/[^0-9]/g, '');
 /* only the experience view's "enough" banner shows a balance past the base package */
-const ENOUGH = 52300;
+const ENOUGH = 7100;
 const HAVE = (() => {
   const pts = p => +p.replace(/[^0-9]/g, '');
   const fits = PACKS.filter(([, p]) => pts(p) <= ENOUGH);
@@ -2168,9 +2168,9 @@ const slides = ARC.map(d => {
     +   '<div class="rd__rule"></div>'
     +   '<p class="rd__lbl">' + PACKS.length + ' חבילות</p>'
     +   '<div class="rd__tiers">' + PACKS.map(([n]) => '<span>' + n + '</span>').join('') + '</div>'
-    +   '<p class="rd__price"><span class="m-price"><b>החל מ־' + PACKS[0][1].replace(' נק׳', '') + ' נקודות</b>'
+    +   '<p class="rd__price"><span class="m-price"><b>החל מ־' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + ' נקודות</b>'
     +     '<span>או 20% מקדמה עכשיו, והיתרה עד למועד</span></span>'
-    +     '<span class="g-price"><b>החל מ-₪' + PACKS[0][1].replace(' נק׳', '') + '</b>'
+    +     '<span class="g-price"><b>החל מ-₪' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + '</b>'
     +     '<span class="rd__deal"><span class="spark" aria-hidden="true"></span><span>עם כרטיס FlyAll אפשר לשריין עכשיו ב־<strong>20%</strong> ולהשלים את היתרה בהמשך</span></span></span></p>'
     + '</div>'));
 
