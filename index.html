@@ -862,7 +862,7 @@ html:not([data-points="enough"]) .rd__have{display:none}
  transition:opacity .25s var(--ease), transform .2s var(--ease)}
 .perks__nav button:active{transform:scale(.94)}
 .perks__nav button:disabled{opacity:.35}
-.perks__cta{display:flex;margin:16px 22px 0 auto;width:fit-content;padding:0 26px;font-family:var(--pf);
+.perks__cta{display:flex;margin:20px auto 0;width:fit-content;padding:0 26px;font-family:var(--pf);
  box-shadow:0 12px 28px rgba(130,74,234,.28)}
 
 /* ============ SECTION 5 · footer ============ */
@@ -1051,8 +1051,8 @@ html:not([data-points="enough"]) .rd__have{display:none}
   .perk__info em{margin-top:6px;font:700 16px/1 var(--pf);font-style:normal;color:var(--ds-blue)}
   .perk__new{position:absolute;top:16px;left:16px;height:24px;padding:0 10px;border-radius:999px;
     display:flex;align-items:center;font:700 12px/1 var(--pf);color:#fff;background-image:var(--ds-gradient)}
-  .perks__cta{grid-column:1;grid-row:2;justify-self:start;display:inline-flex;width:auto;margin:18px 0 0;padding:0 30px}
-  .perks__rail{grid-row:3}
+  .perks__cta{grid-column:1 / -1;grid-row:3;justify-self:center;display:inline-flex;width:auto;margin:8px 0 0;padding:0 30px}
+  .perks__rail{grid-row:2}
 
   /* footer — the three groups side by side */
   .foot{padding:64px var(--gutter) 40px}
@@ -1909,7 +1909,7 @@ function buildPerks(){
   box.appendChild(ctrl);
 
   const more = el('button','perks__cta ds-btn ds-btn--primary ds-btn--block','לכל התוספות');
-  box.appendChild(more);               /* on the right, under the arrows row */
+  box.appendChild(more);               /* centred under the cards */
   more.onclick = () => { location.href = 'addons.html'; };
 
   const step = () => cards[0].getBoundingClientRect().width + (parseFloat(getComputedStyle(rail).columnGap) || 12);
