@@ -779,8 +779,8 @@ html:not([data-points="enough"]) .rd__have{display:none}
 /* ---- step 2 · the approval drawing itself on the card ---- */
 .ok__ring{stroke-dasharray:189;stroke-dashoffset:189}
 .ok__tick{stroke-dasharray:50;stroke-dashoffset:50}
-.how__step.play .ok__ring{animation:drawRing 1s var(--ease) .3s forwards}
-.how__step.play .ok__tick{animation:drawTick .42s var(--ease) 1.15s forwards}
+.how__step.play .ok__ring,.hacc.play .ok__ring{animation:drawRing 1s var(--ease) .3s forwards}
+.how__step.play .ok__tick,.hacc.play .ok__tick{animation:drawTick .42s var(--ease) 1.15s forwards}
 @keyframes drawRing{to{stroke-dashoffset:0}}
 @keyframes drawTick{to{stroke-dashoffset:0}}
 
@@ -1147,7 +1147,46 @@ html:not([data-points="enough"]) .rd__have{display:none}
   .how__track{top:14%}
   .how__step{padding:6px max(24px, calc(50% - 250px)) 110px}
   .how__art svg{max-width:300px;max-height:30vh}
+
+  /* on desktop the swipe gives way to an accordion: all three steps listed,
+     the open one carries its drawing beside the copy, and it moves on by itself */
+  .how__track,.how__dots{display:none}
+  .how__acc{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;
+    width:100%;max-width:640px;box-sizing:border-box;
+    padding:clamp(96px,14vh,140px) clamp(20px,2.5vw,40px) clamp(36px,6vh,56px) clamp(32px,3.5vw,64px)}
+  .how__acc-title{margin:0;font:700 clamp(30px,2.6vw,38px)/1.1 var(--ds-font);color:#fff;text-align:right}
+  .how__acc-title b{background:var(--ds-gradient);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .how__acc-list{margin-top:clamp(20px,3.4vh,32px);display:flex;flex-direction:column;gap:10px}
+  .hacc{position:relative;border-radius:22px;border:1px solid rgba(255,255,255,.1);overflow:hidden;
+    transition:background .35s var(--ease), border-color .35s var(--ease)}
+  .hacc:hover:not(.on){border-color:rgba(255,255,255,.2)}
+  .hacc__hd{display:flex;align-items:center;gap:14px;width:100%;padding:18px 22px;text-align:right;cursor:pointer}
+  .hacc__n{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+    font:700 15px/1 var(--fa-font);color:rgba(255,255,255,.6);border:1.5px solid rgba(255,255,255,.28);
+    transition:background .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease)}
+  .hacc__hd h3{margin:0;font:700 22px/1.15 var(--ds-font);color:#fff;transition:color .35s var(--ease)}
+  .hacc__more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
+  .hacc__more > div{overflow:hidden}
+  .hacc__row{display:grid;grid-template-columns:minmax(0,1fr) clamp(110px,10vw,150px);gap:20px;align-items:center;
+    padding:0 22px 20px 70px}
+  .hacc__row p{margin:0;font:var(--ds-body3);color:#fff;opacity:.82}
+  .hacc__row .how__note{margin-top:12px;color:#fff}
+  .hacc__art svg{display:block;width:100%;height:auto;max-height:clamp(110px,16vh,150px);
+    fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .hacc__bar{position:absolute;bottom:0;right:0;height:2px;width:0;background:var(--tone-fg)}
+  .hacc.on{background:var(--tone-bg);border-color:var(--tone-br)}
+  .hacc.on .hacc__n{background:var(--tone-fg);border-color:transparent;color:#06070F}
+  .hacc.on .hacc__hd h3{color:var(--tone-fg)}
+  .hacc.on .hacc__more{grid-template-rows:1fr}
+  .hacc.on .hacc__bar{animation:haccFill var(--hacc-t,6s) linear forwards}
+  .how__acc > .how__cta{margin-top:auto;height:54px;border-radius:27px;font-size:18px}
+  @keyframes haccFill{to{width:100%}}
 }
+@media (min-width:1024px) and (prefers-reduced-motion: reduce){
+  .hacc__more,.hacc,.hacc__n{transition:none}
+  .hacc.on .hacc__bar{animation:none}
+}
+@media (max-width:1023px){ .how__acc{display:none} }
 @media (min-width:1024px) and (prefers-reduced-motion: reduce){
   .arc .track.is-desk .cell,.tile__v,.perk{transition:none}
 }
@@ -2111,6 +2150,28 @@ function buildHow(){
   HOW.forEach(() => dots.appendChild(el('i')));
   how.appendChild(dots);
 
+  /* desktop: the same three steps as an accordion (the CSS shows one or the other) */
+  const acc = el('div','how__acc',
+    '<h2 class="how__acc-title">איך <b>מגשימים</b> את החלום?</h2>');
+  const list = el('div','how__acc-list');
+  const rows = HOW.map((d, j) => {
+    const it = el('div','hacc tone-' + d.tone,
+      '<button class="hacc__hd" type="button" aria-expanded="false">' +
+        '<span class="hacc__n">' + (j + 1) + '</span><h3>' + d.h + '</h3></button>' +
+      '<div class="hacc__more"><div><div class="hacc__row">' +
+        '<div><p>' + d.p.join(' ') + '</p>' +
+          '<div class="how__note"><b>' + d.note[0] + '</b><span>' + d.note[1] + '</span></div></div>' +
+        '<div class="hacc__art">' + d.art + '</div>' +
+      '</div></div></div>' +
+      '<i class="hacc__bar"></i>');
+    list.appendChild(it);
+    return it;
+  });
+  acc.appendChild(list);
+  const buyLast = HOW.find(d => d.cta);
+  if (buyLast) acc.appendChild(el('button','how__cta ds-btn ds-btn--primary ds-btn--block', buyLast.cta));
+  how.appendChild(acc);
+
   const close = el('button','how__close', X);
   close.setAttribute('aria-label','סגירה');
   how.appendChild(close);
@@ -2138,8 +2199,31 @@ function buildHow(){
     show(best);
   }), { passive:true });
 
-  how._open  = () => { track.scrollLeft = 0; at = -1; show(0); };
-  how._quiet = () => { clearTimeout(chimeAt); };
+  /* the accordion keeps its own place, and walks on every few seconds */
+  const ACC_T = 6000;
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  let accAt = -1, accNext = null;
+  function openRow(i){
+    accAt = i;
+    clearTimeout(accNext); clearTimeout(chimeAt);
+    rows.forEach((it, j) => {
+      it.classList.remove('on', 'play');
+      void it.offsetWidth;                   /* restarts the progress bar and the drawing */
+      it.classList.toggle('on', j === i);
+      it.classList.toggle('play', j === i);
+      it.querySelector('.hacc__hd').setAttribute('aria-expanded', j === i);
+    });
+    if (i === 1) chimeAt = setTimeout(chime, TICK_DONE);
+    if (!still.matches) accNext = setTimeout(() => openRow((accAt + 1) % rows.length), ACC_T);
+  }
+  rows.forEach((it, j) => it.querySelector('.hacc__hd').addEventListener('click', () => openRow(j)));
+  acc.style.setProperty('--hacc-t', ACC_T / 1000 + 's');
+
+  how._open  = () => {
+    if (DESK.matches) { at = -1; openRow(0); }
+    else { track.scrollLeft = 0; at = -1; show(0); }
+  };
+  how._quiet = () => { clearTimeout(chimeAt); clearTimeout(accNext); };
   how._close = close;
   return how;
 }
