@@ -549,7 +549,6 @@ body.reel-open{overflow:hidden}
 .rd__tiers{display:flex;justify-content:center;gap:6px;margin-top:10px}
 .rd__tiers span{height:30px;padding:0 14px;border-radius:15px;display:grid;place-items:center;
  font:700 14px/1 var(--fa-font);background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22)}
-.rd__tiers span:last-child{background:var(--ds-gradient);border-color:transparent}
 .rd__price{margin:18px 0 0}
 .rd__price b{display:block;font:700 24px/1.1 var(--fa-font)}
 .rd__price span{display:block;margin-top:7px;font:var(--ds-body2);opacity:.72}
@@ -854,7 +853,7 @@ html:not([data-points="enough"]) .rd__have{display:none}
  transition:opacity .25s var(--ease), transform .2s var(--ease)}
 .perks__nav button:active{transform:scale(.94)}
 .perks__nav button:disabled{opacity:.35}
-.perks__cta{margin:26px 22px 0;width:calc(100% - 44px);font-family:var(--pf);
+.perks__cta{margin:22px 22px 0;width:calc(100% - 44px);font-family:var(--pf);
  box-shadow:0 12px 28px rgba(130,74,234,.28)}
 
 /* ============ SECTION 5 · footer ============ */
@@ -1043,7 +1042,7 @@ html:not([data-points="enough"]) .rd__have{display:none}
   .perk__info em{margin-top:6px;font:700 16px/1 var(--pf);font-style:normal;color:var(--ds-blue)}
   .perk__new{position:absolute;top:16px;left:16px;height:24px;padding:0 10px;border-radius:999px;
     display:flex;align-items:center;font:700 12px/1 var(--pf);color:#fff;background-image:var(--ds-gradient)}
-  .perks__cta{grid-column:1 / -1;justify-self:start;display:inline-flex;width:auto;margin:24px 0 0;padding:0 30px}
+  .perks__cta{grid-column:1 / -1;justify-self:start;display:inline-flex;width:auto;margin:28px 0 0;padding:0 30px}
 
   /* footer — the three groups side by side */
   .foot{padding:64px var(--gutter) 40px}
@@ -1095,7 +1094,6 @@ html:not([data-points="enough"]) .rd__have{display:none}
   .rd__dates i{display:none}
   .rd__dates span,.rd__tiers span{height:44px;padding:0 20px;border-radius:22px;display:inline-flex;align-items:center;
     font:400 17px/1 var(--fa-font);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.22)}
-  .rd__tiers span:last-child{font-weight:700}
   .rd__price{margin-top:22px}
   .rd__price b{font-size:30px}
   .rd__price span{font-size:16px}
@@ -1174,12 +1172,16 @@ body.is-guest .fa-dh__join{display:inline-flex;align-items:center;height:44px;pa
 body.is-guest .ask__join{display:flex}
 body.is-guest .perks__join{display:inline-flex}
 .ask__join{flex-direction:column;align-items:center;margin:58px auto 16px;text-align:center}   /* the tilted card needs room above and below */
-.ask__card{position:relative;direction:ltr;width:150px;height:94px;border-radius:12px;background:var(--ds-gradient);color:#fff;
-  transform:rotate(-6deg);box-shadow:0 14px 26px rgba(130,74,234,.35);overflow:hidden}
-.ask__card::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.28),rgba(255,255,255,0) 45%)}
-.ask__card b{position:absolute;top:10px;left:12px;font:700 14px/1 var(--fa-display)}
-.ask__card i{position:absolute;top:34px;right:14px;width:30px;height:22px;border-radius:5px;background:#FFE27A}
-.ask__card span{position:absolute;bottom:10px;right:14px;font:400 10px/1 var(--fa-display);letter-spacing:2px;opacity:.85}
+/* a hollow card drawn in a gradient line, so it doesn't pull focus from the button */
+.ask__card{position:relative;direction:ltr;width:118px;height:74px;border-radius:11px;transform:rotate(-6deg)}
+.ask__card::before,.ask__card i{content:"";position:absolute;border:1.5px solid transparent;
+  background:var(--ds-gradient) border-box;-webkit-mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) padding-box exclude,linear-gradient(#000 0 0)}
+.ask__card::before{inset:0;border-radius:inherit}
+.ask__card b,.ask__card span{position:absolute;background:var(--ds-gradient);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ask__card b{top:9px;left:10px;font:700 12px/1 var(--fa-display)}
+.ask__card i{top:27px;right:11px;width:22px;height:16px;border-radius:4px}
+.ask__card span{bottom:9px;right:11px;font:400 9px/1 var(--fa-display);letter-spacing:2px}
 .ask__join p{margin:18px 0 0;font:400 17px/1.35 var(--fa-display);color:var(--ink)}
 .ask__join p strong{display:block;font-weight:700;font-size:20px}
 .ask__join a{margin-top:14px;display:inline-flex;align-items:center;height:40px;padding:0 20px;border-radius:20px;
@@ -1857,7 +1859,7 @@ function buildPerks(){
   box.appendChild(ctrl);
 
   const more = el('button','perks__cta ds-btn ds-btn--primary ds-btn--block','לכל התוספות');
-  box.appendChild(more);
+  box.insertBefore(more, rail);        /* above the cards, right under the heading */
   more.onclick = () => { location.href = 'addons.html'; };
 
   const step = () => cards[0].getBoundingClientRect().width + (parseFloat(getComputedStyle(rail).columnGap) || 12);
@@ -2168,9 +2170,9 @@ const slides = ARC.map(d => {
     +   '<div class="rd__rule"></div>'
     +   '<p class="rd__lbl">' + PACKS.length + ' חבילות</p>'
     +   '<div class="rd__tiers">' + PACKS.map(([n]) => '<span>' + n + '</span>').join('') + '</div>'
-    +   '<p class="rd__price"><span class="m-price"><b>החל מ־' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + ' נקודות</b>'
-    +     '<span>או 20% מקדמה עכשיו, והיתרה עד למועד</span></span>'
-    +     '<span class="g-price"><b>החל מ-₪' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + '</b>'
+    +   '<p class="rd__price"><span class="m-price"><b>' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + ' נקודות</b>'
+    +     '<span>בחבילת בסיס · או 20% מקדמה עכשיו, והיתרה עד למועד</span></span>'
+    +     '<span class="g-price"><b>₪' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + '</b><span>בחבילת בסיס</span>'
     +     '<span class="rd__deal"><span class="spark" aria-hidden="true"></span><span>עם כרטיס FlyAll אפשר לשריין עכשיו ב־<strong>20%</strong> ולהשלים את היתרה בהמשך</span></span></span></p>'
     + '</div>'));
 

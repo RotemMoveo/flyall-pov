@@ -538,7 +538,6 @@ body.reel-open{overflow:hidden}
 .rd__tiers{display:flex;justify-content:center;gap:6px;margin-top:10px}
 .rd__tiers span{height:30px;padding:0 14px;border-radius:15px;display:grid;place-items:center;
  font:700 14px/1 var(--fa-font);background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22)}
-.rd__tiers span:last-child{background:var(--ds-gradient);border-color:transparent}
 .rd__price{margin:18px 0 0}
 .rd__price b{display:block;font:700 24px/1.1 var(--fa-font)}
 .rd__price span{display:block;margin-top:7px;font:var(--ds-body2);opacity:.72}
@@ -1295,7 +1294,6 @@ body.sheet-open{overflow:hidden}
   .rd__dates i{display:none}
   .rd__dates span,.rd__tiers span{height:44px;padding:0 20px;border-radius:22px;display:inline-flex;align-items:center;
     font:400 17px/1 var(--fa-font);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.22)}
-  .rd__tiers span:last-child{font-weight:700}
   .rd__price{margin-top:22px}
   .rd__price b{font-size:30px}
   .rd__price span{font-size:16px}
@@ -1695,7 +1693,7 @@ const SORT_IC = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" str
 const PLAY_IC = '<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg>';
 const num = s => +String(s).replace(/\D/g, '');
 const SORTS = [
-  ['הקרובים',    (a, b) => a.m - b.m],
+  ['תאריך קרוב',    (a, b) => a.m - b.m],
   ['הכי משתלם', (a, b) => num(a.pts) - num(b.pts)],
 ];
 /* one switch for every layout decision the script makes: at 1024px and up the
@@ -2438,9 +2436,9 @@ const slides = ARC.map(d => {
     +   '<div class="rd__rule"></div>'
     +   '<p class="rd__lbl">' + PACKS.length + ' חבילות</p>'
     +   '<div class="rd__tiers">' + PACKS.map(([n]) => '<span>' + n + '</span>').join('') + '</div>'
-    +   '<p class="rd__price"><span class="m-price"><b>החל מ־' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + ' נקודות</b>'
-    +     '<span>או 20% מקדמה עכשיו, והיתרה עד למועד</span></span>'
-    +     '<span class="g-price"><b>החל מ-₪' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + '</b>'
+    +   '<p class="rd__price"><span class="m-price"><b>' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + ' נקודות</b>'
+    +     '<span>בחבילת בסיס · או 20% מקדמה עכשיו, והיתרה עד למועד</span></span>'
+    +     '<span class="g-price"><b>₪' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + '</b><span>בחבילת בסיס</span>'
     +     '<span class="rd__deal"><span class="spark" aria-hidden="true"></span><span>עם כרטיס FlyAll אפשר לשריין עכשיו ב־<strong>20%</strong> ולהשלים את היתרה בהמשך</span></span></span></p>'
     + '</div>'));
 
