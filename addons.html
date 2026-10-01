@@ -485,9 +485,9 @@ body{color:var(--ink)}
 .o2 .k .buyrow{align-items:flex-end;gap:6px}
 .o2 .k .buyrow .pill{min-width:0;flex:0 1 auto}
 /* the guest price ("₪… · או … נק׳") is too long for a half-width card: it breaks onto a second line */
-body.is-guest .o2 .k:not(.k--hero) .pill{flex-direction:column;align-items:flex-start;height:auto;min-height:28px;
+.o2 .k:not(.k--hero) .pill{flex-direction:column;align-items:flex-start;height:auto;min-height:28px;
  padding:6px 12px;gap:2px;border-radius:14px;line-height:1.2}
-body.is-guest .o2 .k:not(.k--hero) .pill .g-dot{display:none}
+.o2 .k:not(.k--hero) .pill .g-dot{display:none}
 .g-m,.g-p{white-space:nowrap}
 
 
@@ -704,7 +704,8 @@ body.is-guest .o2 .k:not(.k--hero) .pill .g-dot{display:none}
 /* ---- demo: guest / signed-in switch ---- */
 /* guest: money price up front, points as the card holder's teaser */
 .g-price,.m-price{display:contents}
-body:not(.is-guest) .g-price,body.is-guest .m-price{display:none}
+/* money or points with the spark for everyone, signed in or not */
+.m-price{display:none!important}
 .spark{display:inline-block;width:.95em;height:.95em;vertical-align:-.12em;background:var(--ds-gradient);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10 5Q11.53 12.47 19 14Q11.53 15.53 10 23Q8.47 15.53 1 14Q8.47 12.47 10 5ZM19 .5Q19.77 4.23 23.5 5Q19.77 5.77 19 9.5Q18.23 5.77 14.5 5Q18.23 4.23 19 .5Z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10 5Q11.53 12.47 19 14Q11.53 15.53 10 23Q8.47 15.53 1 14Q8.47 12.47 10 5ZM19 .5Q19.77 4.23 23.5 5Q19.77 5.77 19 9.5Q18.23 5.77 14.5 5Q18.23 4.23 19 .5Z'/%3E%3C/svg%3E") center/contain no-repeat}
 /* guest: every personal touch becomes an invitation to the FlyAll credit card */
 .fa-join,.fa-dh__join,.ask__join,.perks__join{display:none}
@@ -794,7 +795,7 @@ body.is-guest .trip{display:none}
     <div class="fa-header__left">
       <button class="fa-avatar" type="button" aria-label="החשבון שלי"><span class="fa-avatar__txt">AG</span></button>
 
-      <a class="fa-join" href="#join">לכרטיס FlyAll</a>
+      <a class="fa-join" href="#join">הצטרף ל-FlyAll</a>
       <a class="fa-points" href="#points">
         <span class="fa-sr">יתרת הנקודות שלי:</span>
         <span class="fa-points__value">500</span>
@@ -986,13 +987,11 @@ const ARR_L = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" strok
 const PLUS  = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
 const SORT  = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v16M3 16l4 4 4-4M17 20V4M13 8l4-4 4 4"/></svg>';
 
-/* signed in: the balance as a tag riding a dashed flight path toward the holiday. The tag is moved
+/* signed in: a plane riding a dashed flight path toward the holiday (no balance on show). The tag is moved
    by animateMotion along the very same path, so it can never leave the line; it stops halfway.
    Mobile keeps the compact arc; desktop draws one across the whole page, from home (right) to the holiday (left). */
 const BAG = (() => {
-  const bal = +(document.querySelector('.fa-points__value')?.textContent || '0').replace(/[^0-9]/g, '');
-  const label = fmt(bal);
-  const arc = (id, vb, d, a, b, w, ends, turn) =>
+  const arc = (id, vb, d, a, b, ends) =>
     '<svg class="trip__arc trip__arc--' + id + '" viewBox="' + vb + '" aria-hidden="true">' +
       '<defs><linearGradient id="tripG-' + id + '" gradientUnits="userSpaceOnUse" x1="' + a[0] + '" y1="0" x2="' + b[0] + '" y2="0">' +
         '<stop offset="0" stop-color="#1B5ECE"/><stop offset=".5" stop-color="#824AEA"/><stop offset="1" stop-color="#F63DE4"/></linearGradient></defs>' +
@@ -1000,21 +999,20 @@ const BAG = (() => {
       '<circle cx="' + a[0] + '" cy="' + a[1] + '" r="6" fill="#1B5ECE"/><circle cx="' + b[0] + '" cy="' + b[1] + '" r="6" fill="#F63DE4"/>' +
       (ends ? '<text class="trip__end" x="' + a[0] + '" y="' + (a[1] + 26) + '" text-anchor="middle">' + ends[0] + '</text>' +
               '<text class="trip__end" x="' + b[0] + '" y="' + (b[1] + 26) + '" text-anchor="middle">' + ends[1] + '</text>' : '') +
-      '<g class="trip__tag" data-turn="' + (turn ? 180 : 0) + '" transform="translate(' + a[0] + ' ' + a[1] + ')">' +
-        '<rect x="' + (-w / 2) + '" y="-13" width="' + w + '" height="26" rx="13" fill="#fff" stroke="#E6E0F5"/>' +
-        '<text x="0" y="5" text-anchor="middle">' + label + '</text>' +
+      '<g class="trip__tag" data-turn="0" transform="translate(' + a[0] + ' ' + a[1] + ')">' +   /* the plane always flies nose-first */
+        '<circle r="16" fill="#fff" stroke="#E6E0F5"/>' +
+        '<path transform="rotate(90) translate(-10 -10) scale(.84)" fill="#824AEA" d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/>' +
       '</g></svg>';
-  const w = 22 + label.length * 9;
   return '<div class="trip">' +
-    arc('m', '0 0 320 80', 'M24 66 Q160 -14 296 60', [24, 66], [296, 60], w) +
-    arc('d', '0 0 1000 124', 'M970 84 Q500 -40 30 84', [970, 84], [30, 84], w, ['הבית', 'החופשה'], 'auto-reverse')   /* heading left: turned back so the label reads upright */ +
+    arc('m', '0 0 320 80', 'M24 66 Q160 -14 296 60', [24, 66], [296, 60]) +
+    arc('d', '0 0 1000 124', 'M970 84 Q500 -40 30 84', [970, 84], [30, 84], ['הבית', 'החופשה']) +
     '<strong>ענת, הנקודות שלך כבר בדרך לחופשה</strong>' +
     '<span>בחרי איפה לשדרג אותה</span></div>';
 })();
 const LEAD = '<section class="lead">' +
   '<a class="lead__home" href="pov-reels.html">'+ARROW+'<span>חזרה לעמוד הראשי</span></a>' +
   '<h2>כל התוספות</h2>' +
-  '<p class="lead__sub">'+ITEMS.length+' תוספות<i></i>החל מ- <b>'+fmt(Math.min(...ITEMS.map(d=>d.pts)))+'</b> נק׳</p>' + BAG + '</section>';
+  '<p class="lead__sub">'+ITEMS.length+' תוספות<i></i>החל מ־<b>₪'+fmt(Math.min(...ITEMS.map(d=>d.pts)))+'</b> או <b>'+fmt(Math.min(...ITEMS.map(d=>d.pts)))+'</b> נק׳</p>' + BAG + '</section>';
 const HEAD = (t, n, end) => '<div class="bhead"><h3>'+t+'</h3>'+(end||'')+'</div>';
 const SORTBTN = '<button class="bhead__link" type="button"><span>הכי משתלם</span>'+SORT+'</button>';
 

@@ -1393,12 +1393,16 @@ body.is-guest .lead__why{display:flex}
 /* ---- demo: guest / signed-in switch ---- */
 /* guest: money price up front, points as the card holder's teaser */
 .g-price,.m-price{display:contents}
-body:not(.is-guest) .g-price,body.is-guest .m-price{display:none}
+/* money or points with the spark for everyone, signed in or not */
+.m-price{display:none!important}
+body:not(.is-guest) .rd__price .m-price{display:contents!important}
+body.is-guest .rd__price .m-price,body:not(.is-guest) .rd__price .g-price{display:none}
 /* guest: the card holder's deal, framed in the brand gradient so it reads as the better way in */
 .rd__price .g-price,.rd__price .m-price{display:contents}
 .rd__price .rd__deal{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;padding:11px 14px;border-radius:16px;opacity:1;color:#fff;text-align:center;border:1.5px solid transparent;background:linear-gradient(rgba(24,18,46,.94),rgba(24,18,46,.94)) padding-box,var(--ds-gradient) border-box;box-shadow:0 10px 28px rgba(130,74,234,.38)}
 .rd__price .rd__deal > span{display:block;margin:0;opacity:1}
 .rd__price .rd__deal .spark{flex:none;width:20px;height:20px}
+.rd__price b .spark{display:inline-block;margin:0;width:.85em;height:.85em;vertical-align:-.05em;opacity:1}
 .rd__deal strong{font-weight:700}
 /* on film and on the dark glass the brand ramp sinks — the same ramp, lifted */
 .tile__from .spark,.perk__copy .spark,.rd__deal .spark{background:linear-gradient(90deg,#C6D8FF 0%,#E4D0FF 50%,#FFC8F8 100%)}
@@ -1608,13 +1612,13 @@ function cta(cls){
 /* ================= HERO · the category's title, straight into the list ================= */
 function buildArc(){
   const root = el('div','arc');
+  const LOW = Math.min(...ARC.map(d => num(d.pts))).toLocaleString('en-US');
   const lead = el('div','lead',
     '<a class="lead__home" href="pov-reels.html">' +
       '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' +
       'חזרה לעמוד הראשי</a>' +
     '<h2><b>'+(CAT.h || CAT.t)+'</b></h2>'+
-    '<p class="lead__sub">'+CAT.n+' חוויות<i></i>החל מ-<b>'+
-      Math.min(...ARC.map(d => num(d.pts))).toLocaleString('en-US')+'</b> נק׳</p>');
+    '<p class="lead__sub">'+CAT.n+' חוויות<i></i>החל מ־<b>₪'+LOW+'</b> או <b>'+LOW+'</b> נקודות</p>');
   /* signed in: the balance beside what is still missing to the category's first experience */
   const first = Math.min(...ARC.map(d => num(d.pts)));
   const fmt = n => n.toLocaleString('en-US');
@@ -2114,7 +2118,7 @@ const PACKS = [
    decides whether the experience view says it is enough */
 const BALANCE = +(document.querySelector('.fa-points__value')?.textContent || '500').replace(/[^0-9]/g, '');
 /* only the experience view's "enough" banner shows a balance past the base package */
-const ENOUGH = 7100;
+const ENOUGH = 6200;
 const HAVE = (() => {
   const pts = p => +p.replace(/[^0-9]/g, '');
   const fits = PACKS.filter(([, p]) => pts(p) <= ENOUGH);
@@ -2363,7 +2367,7 @@ const slides = ARC.map(d => {
     +   '<div class="rd__rule"></div>'
     +   '<p class="rd__lbl">' + PACKS.length + ' חבילות</p>'
     +   '<div class="rd__tiers">' + PACKS.map(([n]) => '<span>' + n + '</span>').join('') + '</div>'
-    +   '<p class="rd__price"><span class="m-price"><b>' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + ' נקודות</b>'
+    +   '<p class="rd__price"><span class="m-price"><b>₪' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + ' או ' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + ' נקודות <span class="spark" aria-hidden="true"></span></b>'
     +     '<span>בחבילת בסיס · או 20% מקדמה עכשיו, והיתרה עד למועד</span></span>'
     +     '<span class="g-price"><b>₪' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + '</b><span>בחבילת בסיס</span>'
     +     '<span class="rd__deal"><span class="spark" aria-hidden="true"></span><span>עם כרטיס FlyAll אפשר לשריין עכשיו ב־<strong>20%</strong> ולהשלים את היתרה בהמשך</span></span></span></p>'

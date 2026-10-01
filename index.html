@@ -484,10 +484,14 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .ask__ring{position:relative;width:92px;height:92px}
 .ask__ring svg{width:100%;height:100%;transform:rotate(-90deg)}
 .ask__ring .bg{stroke:rgba(130,74,234,.14)}
-.ask__ring .fg{stroke-dasharray:var(--c);stroke-dashoffset:var(--c);transition:stroke-dashoffset 1.4s var(--ease) .35s}
-.ask__me.in .ask__ring .fg{stroke-dashoffset:var(--off)}
-.ask__ring b{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:700 22px/1 var(--fa-display);color:var(--ds-purple)}
-.ask__ring small{font-size:12px;font-weight:400;color:var(--ink);opacity:.6}
+/* no balance on show: a fixed arc turns round the ring, a plane in the middle */
+.ask__ring .fg{stroke-dasharray:150 101.3;opacity:0;transition:opacity .6s var(--ease) .35s}
+.ask__me.in .ask__ring .fg{opacity:1}
+.ask__ring > svg{animation:askSpin 6s linear infinite}
+@keyframes askSpin{to{transform:rotate(270deg)}}
+.ask__ring b{position:absolute;inset:0;display:grid;place-items:center;color:var(--ds-purple)}
+.ask__ring b svg{width:34px;height:34px}
+@media (prefers-reduced-motion: reduce){ .ask__ring > svg{animation:none} }
 .ask__me p{margin:14px 0 0;font:400 17px/1.35 var(--fa-display);color:var(--ink)}
 .ask__me p strong{display:block;font-weight:700;font-size:20px}
 .tile__count{position:absolute;z-index:2;top:20px;left:16px;height:28px;padding:0 11px;
@@ -813,8 +817,13 @@ html:not([data-points="enough"]) .rd__have{display:none}
 .perks__wallet{display:inline-flex;align-items:center;gap:14px;margin-top:18px;padding:6px;padding-inline-end:14px;   /* the chip sits 6px in; the text gets the same space on both sides */
   background:#fff;border:1px solid #E6E0F5;border-radius:26px;font:400 15px/1 var(--pf);color:var(--ds-black)}
 .perks__wallet em{font-style:normal;line-height:1.3;white-space:nowrap}
-.perks__wallet span{flex:none;white-space:nowrap;padding:8px 12px;border-radius:20px;background:var(--ds-gradient);color:#fff;font-weight:700}
+.perks__wallet span{flex:none;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;padding:8px 12px;border-radius:20px;background:var(--ds-gradient);color:#fff;font-weight:700}
 .perks__wallet b{font-weight:700}
+/* the chip says there are points without saying how many */
+.perks__wallet i{position:relative;width:8px;height:8px;border-radius:50%;background:#fff;flex:none}
+.perks__wallet i::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid #fff;opacity:0;animation:walletPing 1.8s ease-out infinite}
+@keyframes walletPing{0%{transform:scale(.4);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+@media (prefers-reduced-motion: reduce){ .perks__wallet i::after{animation:none} }
 
 .perks__rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;
  scroll-behavior:smooth;scrollbar-width:none;margin-top:24px;padding:0 22px;
@@ -1145,14 +1154,18 @@ html:not([data-points="enough"]) .rd__have{display:none}
 /* ---- demo: guest / signed-in switch ---- */
 /* guest: money price up front, points as the card holder's teaser */
 .g-price,.m-price{display:contents}
-body:not(.is-guest) .g-price,body.is-guest .m-price{display:none}
+/* money or points with the spark for everyone, signed in or not */
+.m-price{display:none!important}
+body:not(.is-guest) .rd__price .m-price{display:contents!important}
+body.is-guest .rd__price .m-price,body:not(.is-guest) .rd__price .g-price{display:none}
 /* guest: the card holder's deal, framed in the brand gradient so it reads as the better way in */
 .rd__price .g-price,.rd__price .m-price{display:contents}
 .rd__price .rd__deal{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;padding:11px 14px;border-radius:16px;opacity:1;color:#fff;text-align:center;border:1.5px solid transparent;background:linear-gradient(rgba(24,18,46,.94),rgba(24,18,46,.94)) padding-box,var(--ds-gradient) border-box;box-shadow:0 10px 28px rgba(130,74,234,.38)}
 .rd__price .rd__deal > span{display:block;margin:0;opacity:1}
 .rd__price .rd__deal .spark{flex:none;width:20px;height:20px}
+.rd__price b .spark{display:inline-block;margin:0;width:.85em;height:.85em;vertical-align:-.05em;opacity:1}
 .rd__deal strong{font-weight:700}
-.perk__copy .g-price,.perk__copy .m-price{display:contents}
+.perk__copy .g-price{display:contents}
 .perk__copy .spark{display:inline-block;margin:0;opacity:1}
 body.is-guest .perk__copy > span{white-space:nowrap}
 .perk__info em span{font:inherit;color:inherit}
@@ -1260,7 +1273,7 @@ body.is-guest.reel-open .who.who--pts{display:none}
     <div class="fa-header__left">
       <button class="fa-avatar" type="button" aria-label="החשבון שלי"><span class="fa-avatar__txt">AG</span></button>
 
-      <a class="fa-join" href="#join">לכרטיס FlyAll</a>
+      <a class="fa-join" href="#join">הצטרף ל-FlyAll</a>
       <a class="fa-points" href="#points">
         <span class="fa-sr">יתרת הנקודות שלי:</span>
         <span class="fa-points__value">500</span>
@@ -1402,7 +1415,7 @@ function buildArc(){
   const root = el('div','arc');
   const lead = el('div','lead',
     '<h2><span class="l0">ענת,</span><span class="l1">מה החלום</span><span class="l2">שלך <b>היום?</b></span></h2>'+
-    '<p class="lead__sub">הופעות, משחקים, חופשות וחוויות<br> שמחכות להפוך למציאות</p>'+
+    '<p class="lead__sub">הופעות, משחקי כדורגל, חופשות וחוויות<br> שמחכות להפוך למציאות</p>'+
     '<button class="ds-btn ds-btn--primary lead__cta">גלו את כל החלומות'+ARROW+'</button>');
   lead.querySelector('.lead__cta').addEventListener('click', () => { location.href = 'pov-all.html'; });
   root.appendChild(lead);
@@ -1634,18 +1647,16 @@ function buildAsk(){
   panel.appendChild(sub);
   box.appendChild(panel);
 
-  /* the balance itself, with the ring filled toward the first experience on the site */
-  const first = Math.min(...CATS.map(c => pts(c.from)));
-  const pct = Math.min(100, Math.round(MY_POINTS / first * 100));
-  const R = 40, C = +(2 * Math.PI * R).toFixed(1);
+  /* the ring turns round a plane: the journey has begun, whatever the balance */
+  const R = 40;
   const me = el('div','ask__me',
-    '<div class="ask__ring" style="--c:' + C + ';--off:' + (C * (1 - pct/100)).toFixed(1) + '">' +
+    '<div class="ask__ring">' +
       '<svg viewBox="0 0 92 92" aria-hidden="true"><defs><linearGradient id="meG" x1="0" y1="0" x2="1" y2="1">' +
       '<stop offset="0" stop-color="#1B5ECE"/><stop offset=".5" stop-color="#824AEA"/><stop offset="1" stop-color="#F63DE4"/></linearGradient></defs>' +
       '<circle class="bg" cx="46" cy="46" r="' + R + '" fill="none" stroke-width="7"/>' +
       '<circle class="fg" cx="46" cy="46" r="' + R + '" fill="none" stroke="url(#meG)" stroke-width="7" stroke-linecap="round"/></svg>' +
-      '<b>' + fmt(MY_POINTS) + '<small>נק׳</small></b></div>' +
-    '<p><strong>ענת, הדרך לחלום כבר התחילה</strong>המשיכי לצבור, ואנחנו נדאג לשאר</p>');
+      '<b aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg></b></div>' +
+    '<p><strong>ענת, הדרך לחלום כבר התחילה</strong>כל קנייה בכרטיס מקרבת אותך לחוויה</p>');
   panel.appendChild(me);
   /* guest: the same slot invites to the card instead */
   const join = el('div','ask__join',
@@ -1788,13 +1799,9 @@ function buildPerks(){
   const head = el('div','perks__head',
     '<h2><span class="ln">החופשה שלך,</span><span class="ln"><b>עד הפרט</b></span><span class="ln"><b>האחרון</b></span></h2>' +
     '<p class="perks__sub ln">משדרגים את הדרך אל החלום, ומשלמים בנקודות, בכסף או גם וגם.</p>');
-  /* how many add-ons the balance covers together, cheapest first */
-  let left = MY_POINTS, covers = 0;
-  [...PERKS.map(d => pts(d.points)), ...PERKS_MORE.map(d => pts(d.pts))]
-    .sort((a,b) => a - b).forEach(p => { if (p <= left) { left -= p; covers++; } });
   head.appendChild(el('p','perks__wallet',
-    '<span>יש לך כבר ' + fmt(MY_POINTS) + ' נק׳</span><em>מספיק ל-<b>' + covers + ' תוספות</b> לחופשה הבאה</em>'));
-  const pj = el('a','perks__join', '<span>הצטרף לכרטיס FlyAll</span><em>והתוספות משולמות בנקודות</em>');
+    '<span><i aria-hidden="true"></i>הנקודות שלך</span><em>חוסכות לך כסף · <b>1 נק׳ = ₪1</b></em>'));
+  const pj = el('a','perks__join', '<span>הצטרף לכרטיס FlyAll</span><em>ותרכוש תוספות לטיול בנקודות!</em>');
   pj.href = '#join';
   head.appendChild(pj);
   box.appendChild(head);
@@ -1921,7 +1928,7 @@ const PACKS = [
    decides whether the experience view says it is enough */
 const BALANCE = +(document.querySelector('.fa-points__value')?.textContent || '500').replace(/[^0-9]/g, '');
 /* only the experience view's "enough" banner shows a balance past the base package */
-const ENOUGH = 7100;
+const ENOUGH = 6200;
 const HAVE = (() => {
   const pts = p => +p.replace(/[^0-9]/g, '');
   const fits = PACKS.filter(([, p]) => pts(p) <= ENOUGH);
@@ -2170,7 +2177,7 @@ const slides = ARC.map(d => {
     +   '<div class="rd__rule"></div>'
     +   '<p class="rd__lbl">' + PACKS.length + ' חבילות</p>'
     +   '<div class="rd__tiers">' + PACKS.map(([n]) => '<span>' + n + '</span>').join('') + '</div>'
-    +   '<p class="rd__price"><span class="m-price"><b>' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + ' נקודות</b>'
+    +   '<p class="rd__price"><span class="m-price"><b>₪' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + ' או ' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + ' נקודות <span class="spark" aria-hidden="true"></span></b>'
     +     '<span>בחבילת בסיס · או 20% מקדמה עכשיו, והיתרה עד למועד</span></span>'
     +     '<span class="g-price"><b>₪' + (d.pts || PACKS[0][1].replace(' נק׳', '')) + '</b><span>בחבילת בסיס</span>'
     +     '<span class="rd__deal"><span class="spark" aria-hidden="true"></span><span>עם כרטיס FlyAll אפשר לשריין עכשיו ב־<strong>20%</strong> ולהשלים את היתרה בהמשך</span></span></span></p>'
